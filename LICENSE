@@ -1,0 +1,58 @@
+const form = document.getElementById('url-form');
+const urlInput = document.getElementById('urlInput');
+const statusBox = document.getElementById('status');
+const resultsBox = document.getElementById('results');
+
+const riskValue = document.getElementById('riskValue');
+const httpsValue = document.getElementById('httpsValue');
+const suspiciousValue = document.getElementById('suspiciousValue');
+const hostnameValue = document.getElementById('hostnameValue');
+const redirectValue = document.getElementById('redirectValue');
+const urlValue = document.getElementById('urlValue');
+const aiSummary = document.getElementById('aiSummary');
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const inputUrl = urlInput.value.trim();
+
+  if (!inputUrl) {
+    showStatus('Please enter a URL.', 'error');
+    return;
+  }
+
+  try {
+    showStatus('Checking URL...', 'success');
+
+    const response = await fetch('/api/check-url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: inputUrl })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Unable to analyze URL.');
+    }
+
+    riskValue.textContent = data.risk || '-';
+    httpsValue.textContent = data.isHttps ? 'Yes' : 'No';
+    suspiciousValue.textContent = data.isSuspicious ? 'Yes' : 'No';
+    hostnameValue.textContent = data.hostname || '-';
+    redirectValue.textContent = String(data.redirectCount || 0);
+    urlValue.textContent = data.url || '-';
+    aiSummary.textContent = data.aiSummary || 'No AI summary available.';
+
+    resultsBox.classList.remove('hidden');
+    showStatus('Analysis complete.', 'success');
+  } catch (error) {
+    resultsBox.classList.add('hidden');
+    showStatus(error.message, 'error');
+  }
+});
+
+function showStatus(message, type) {
+  statusBox.textContent = message;
+  statusBox.classList.remove('hidden', 'error', 'success');
+  statusBox.classList.add(type);
+}

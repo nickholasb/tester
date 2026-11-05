@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI URL Safety Checker</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <h1>AI URL Safety Checker</h1>
+        <p>Check a URL, inspect redirect behavior, and get an AI-powered security summary.</p>
+      </header>
+
+      <main class="card">
+        <form id="url-form">
+          <label for="urlInput">Enter URL</label>
+          <div class="input-row">
+            <input id="urlInput" type="url" placeholder="https://example.com" required />
+            <button type="submit">Check</button>
+          </div>
+        </form>
+
+        <div id="status" class="status hidden"></div>
+
+        <section id="results" class="results hidden">
+          <div class="grid">
+            <div class="panel">
+              <h3>Security</h3>
+              <p><strong>Risk:</strong> <span id="riskValue">-</span></p>
+              <p><strong>HTTPS:</strong> <span id="httpsValue">-</span></p>
+              <p><strong>Suspicious:</strong> <span id="suspiciousValue">-</span></p>
+            </div>
+
+            <div class="panel">
+              <h3>URL Details</h3>
+              <p><strong>Hostname:</strong> <span id="hostnameValue">-</span></p>
+              <p><strong>Redirects:</strong> <span id="redirectValue">-</span></p>
+              <p><strong>Original:</strong> <span id="urlValue">-</span></p>
+            </div>
+          </div>
+
+          <div class="panel ai-panel">
+            <h3>AI Summary</h3>
+            <p id="aiSummary">-</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
